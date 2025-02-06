@@ -1,9 +1,9 @@
 import { StatusBar } from 'react-native';
 import { useFonts, Roboto_400Regular, Roboto_700Bold } from '@expo-google-fonts/roboto';
-import { GluestackUIProvider, Center, Text } from '@gluestack-ui/themed';
+import { GluestackUIProvider } from '@gluestack-ui/themed';
 import { config } from "./config/gluestack-ui.config"
-import { Loading } from '@components/loading';
-import { SignIn } from '@screens/signIn';
+import { Loading } from '@components/Loading';
+import { SignIn } from '@screens/SignIn';
  
 export default function App() {
  
