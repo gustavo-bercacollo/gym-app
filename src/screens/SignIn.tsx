@@ -36,7 +36,7 @@ export function SignIn() {
             <Input placeholder="Senha" secureTextEntry/>
 
             <Button 
-              title="Acessar">
+              title="Acessar"> 
 
             </Button>
 

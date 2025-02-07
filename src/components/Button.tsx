@@ -1,5 +1,5 @@
 import { ComponentProps } from "react";
-import { Button as GluestackButton, Text } from "@gluestack-ui/themed";
+import { Button as GluestackButton, Text, ButtonSpinner } from "@gluestack-ui/themed";
 
 type Props = ComponentProps<typeof GluestackButton> & {
   title: string;
@@ -15,16 +15,18 @@ export function Button({title, isLoading = false, ...rest}: Props) {
     borderWidth="$0"
     borderColor="$green500"
     rounded="$sm"
-    active-bg="$green500"
+    $active-backgroundColor="$green500"
+    disabled={isLoading}
     {...rest}
     >
-      <Text 
-        color="$white"
-        fontFamily="$heading"
-        fontSize="$sm"
-        >
-        {title}
-      </Text>
+      { isLoading ? <ButtonSpinner color="$white"/> 
+        : <Text 
+           color="$white"
+           fontFamily="$heading"
+           fontSize="$sm"
+           >
+           {title}
+          </Text>}
     </GluestackButton>
   );
 }
