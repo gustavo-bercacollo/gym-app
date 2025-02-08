@@ -4,6 +4,7 @@ import { GluestackUIProvider } from '@gluestack-ui/themed';
 import { config } from "./config/gluestack-ui.config"
 import { Loading } from '@components/Loading';
 import { Routes } from '@routes/index';
+
  
 export default function App() {
  
