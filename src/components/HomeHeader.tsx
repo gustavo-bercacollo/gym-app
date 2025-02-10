@@ -1,5 +1,6 @@
- import { HStack, Text, Heading, VStack } from "@gluestack-ui/themed";
+import { HStack, Text, Heading, VStack, Icon } from "@gluestack-ui/themed";
 import { UserPhoto } from "./userPhoto";
+import { LogOut } from "lucide-react-native"
 
 export function HomeHeader() {
   return(
@@ -8,7 +9,7 @@ export function HomeHeader() {
       w="$16"
       h="$16"
       />
-      <VStack>
+      <VStack flex={1}>
       <Text color="$gray100" fontSize="$sm">
         Olá
       </Text>
@@ -16,6 +17,7 @@ export function HomeHeader() {
         Gym App
       </Heading>
       </VStack>
+      <Icon as={LogOut} size="xl" color="$gray200"/>
     </HStack>
   );
 }
