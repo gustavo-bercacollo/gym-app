@@ -3,6 +3,7 @@ import { HomeHeader } from "@components/HomeHeader";
 import { Group } from "@components/Group";
 import { useState } from "react";
 import { FlatList } from "react-native";
+import { ExerciseCard } from "@components/ExerciseCard";
 
 export function Home() {
 
@@ -39,6 +40,12 @@ export function Home() {
         4
        </Text>
       </HStack>
+
+      <ExerciseCard 
+      exerciseName="Puxada frontal" 
+      description="3 séries x 12 repetições"
+      imageUrl="https://static.wixstatic.com/media/2edbed_60c206e178ad4eb3801f4f47fc6523df~mv2.webp/v1/fill/w_350,h_375,al_c/2edbed_60c206e178ad4eb3801f4f47fc6523df~mv2.web"
+      />
 
     
 
