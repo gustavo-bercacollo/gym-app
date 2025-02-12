@@ -11,9 +11,9 @@ import { TouchableOpacity, TouchableOpacityProps } from 'react-native'
 
 
 type Props = TouchableOpacityProps & {
-  exerciseName: string
-  description: string
-  imageUrl: string
+  exerciseName?: string
+  description?: string
+  imageUrl?: string
 }
 
 export function ExerciseCard({exerciseName, description, imageUrl, ...props }: Props) {
