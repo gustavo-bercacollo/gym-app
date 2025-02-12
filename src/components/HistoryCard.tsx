@@ -12,6 +12,7 @@ export function HistoryCard({ exerciseName, description, time}: Props) {
     bg="$gray600"
     px="$5"
     py="$4"
+    mb="$3"
     rounded="$md"
     alignItems="center"
     justifyContent="space-between"
