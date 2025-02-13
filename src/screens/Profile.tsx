@@ -1,6 +1,6 @@
 import { ScrollView, TouchableOpacity } from "react-native";
 import { ScreenHeader } from "@components/ScreenHeader";
-import { VStack, Center, Text  } from "@gluestack-ui/themed";
+import { VStack, Center, Text, Heading  } from "@gluestack-ui/themed";
 import { UserPhoto } from "@components/userPhoto";
 import { Input } from "@components/Input";
 
@@ -38,8 +38,25 @@ export function Profile() {
            />
         </Center>
 
+        <Heading
+        alignSelf="flex-start"
+        fontFamily="$heading"
+        color="$gray200"
+        fontSize="$md"
+        mt="$12"
+        mb="$2"
+        >
+          Alterar senha
+       </Heading>
+        <Center w="$full" gap="$4">
+        <Input placeholder="Senha antiga" bg="$gray600" secureTextEntry/>
+        <Input placeholder="nova senha" bg="$gray600" secureTextEntry/>
+        <Input placeholder="Confirme a nova senha " bg="$gray600" secureTextEntry/>
         </Center>
+        
+      </Center>
 
+      
         
       </ScrollView>
     </VStack>
