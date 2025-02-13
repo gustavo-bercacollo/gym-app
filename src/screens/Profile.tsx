@@ -3,6 +3,7 @@ import { ScreenHeader } from "@components/ScreenHeader";
 import { VStack, Center, Text, Heading  } from "@gluestack-ui/themed";
 import { UserPhoto } from "@components/userPhoto";
 import { Input } from "@components/Input";
+import { Button } from "@components/Button";
 
 export function Profile() {
   return(
@@ -52,7 +53,11 @@ export function Profile() {
         <Input placeholder="Senha antiga" bg="$gray600" secureTextEntry/>
         <Input placeholder="nova senha" bg="$gray600" secureTextEntry/>
         <Input placeholder="Confirme a nova senha " bg="$gray600" secureTextEntry/>
+
+        <Button title="Atualizar"/>
         </Center>
+
+        
         
       </Center>
 
