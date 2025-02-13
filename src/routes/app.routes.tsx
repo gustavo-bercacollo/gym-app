@@ -2,11 +2,6 @@ import {
   BottomTabNavigationProp,
   createBottomTabNavigator,
 } from '@react-navigation/bottom-tabs'
-import {
-  createNativeStackNavigator,
-  NativeStackNavigationProp,
-} from '@react-navigation/native-stack'
-
 import { gluestackUIConfig } from '../../config/gluestack-ui.config'
 
 import HomeSvg from '@assets/home.svg'
@@ -21,26 +16,21 @@ import { Platform } from 'react-native'
 
 type AppRoutes = {
   home: undefined
+  exercise: undefined
   profile: undefined
   history: undefined
 }
 
-type ExerciseRoutes = {
-  exercise: undefined
-}
-
 export type AppNavigatorRoutesProps = BottomTabNavigationProp<AppRoutes>
-export type ExerciseNavigatorRouteProps = NativeStackNavigationProp<ExerciseRoutes>
 
-const Tab = createBottomTabNavigator<AppRoutes>()
-const Stack = createNativeStackNavigator<ExerciseRoutes>()
+const { Navigator, Screen } = createBottomTabNavigator<AppRoutes>()
 
 export function AppRoutes() {
   const { tokens } = gluestackUIConfig
-  const iconSize = tokens.space['7']
+  const iconSize = tokens.space['6']
 
   return (
-    <Tab.Navigator
+    <Navigator
       screenOptions={{
         headerShown: false,
         tabBarShowLabel: false,
@@ -50,13 +40,12 @@ export function AppRoutes() {
           backgroundColor: tokens.colors.gray600,
           borderTopWidth: 0,
           height: Platform.OS === 'android' ? 'auto' : 96,
-          paddingBottom: tokens.space['12'],
-          paddingTop: tokens.space['3'],
-          paddingHorizontal: tokens.space['5'],
+          paddingBottom: tokens.space['10'],
+          paddingTop: tokens.space['6'],
         },
       }}
     >
-      <Tab.Screen
+      <Screen
         name="home"
         component={Home}
         options={{
@@ -65,7 +54,7 @@ export function AppRoutes() {
           ),
         }}
       />
-      <Tab.Screen
+      <Screen
         name="history"
         component={History}
         options={{
@@ -74,7 +63,7 @@ export function AppRoutes() {
           ),
         }}
       />
-      <Tab.Screen
+      <Screen
         name="profile"
         component={Profile}
         options={{
@@ -83,14 +72,11 @@ export function AppRoutes() {
           ),
         }}
       />
-    </Tab.Navigator>
-  )
-}
-
-export function ExerciseRoutes() {
-  return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="exercise" component={Exercise} />
-    </Stack.Navigator>
+      <Screen
+        name="exercise"
+        component={Exercise}
+        options={{ tabBarButton: () => null }}
+      />
+    </Navigator>
   )
 }
