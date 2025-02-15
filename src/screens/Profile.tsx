@@ -1,30 +1,64 @@
 import { useState } from "react";
 
-import { ScrollView, TouchableOpacity } from "react-native";
+import { Alert, ScrollView, TouchableOpacity } from "react-native";
 import { ScreenHeader } from "@components/ScreenHeader";
-import { VStack, Center, Text, Heading  } from "@gluestack-ui/themed";
+import { VStack, Center, Text, Heading, useToast } from "@gluestack-ui/themed";
 import { UserPhoto } from "@components/userPhoto";
 import { Input } from "@components/Input";
 import { Button } from "@components/Button";
+
 import * as ImagePicker from "expo-image-picker"
+import * as FileSystem from "expo-file-system"
+import { ToastMessage } from "@components/ToastMessage";
 
 export function Profile() {
   
   const [userPhoto, setUserPhoto] = useState("https://github.com/gustavo-bercacollo.png");
 
+  const toast = useToast();
+  
   async function handleUserPhotoSelect() {
-    const photoSelected = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 4],
-      quality: 1,
-    });
-
-    if (photoSelected.canceled) {
-      return;
+    
+    try {
+      const photoSelected = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 4],
+        quality: 1,
+      });
+  
+      if (photoSelected.canceled) {
+        return;
+      }
+  
+      const photoUri = photoSelected.assets[0].uri
+  
+      if(photoUri){
+  
+        const phoInfo = (await FileSystem.getInfoAsync(photoUri)) as {
+          size: number;      
+        }
+        
+        if(phoInfo.size && phoInfo.size / 1024 / 1024 > 0.1 ){
+          return toast.show({
+            placement: "top",
+            render: ({ id}) => 
+            <ToastMessage 
+            id={id} 
+            action="error" 
+            title="Essa imagem é muito grande. Escolha uma de até 5MB."
+            onClose={() => toast.close(id)}
+            />
+          })
+        }
+  
+        setUserPhoto(photoUri);
+      }
+    } catch (error) {
+      console.log(error);
     }
-
-    setUserPhoto(photoSelected.assets[0].uri);
+    
+    
   }
 
   return(
