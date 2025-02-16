@@ -1,4 +1,3 @@
-import { useState } from "react"
 import { VStack, Image, Center, Text, Heading, ScrollView } from "@gluestack-ui/themed"
 import BackgroundImg from "@assets/background.png"
 import Logo from "@assets/logo.svg"
@@ -17,7 +16,7 @@ export function SignUp() {
     password_confirm: string;
   } 
 
-  const { control, handleSubmit } = useForm<FormDataProps>();
+  const { control, handleSubmit, formState: {errors} } = useForm<FormDataProps>();
 
   const navigator = useNavigation<AuthNavigatorRoutesProps>();
 
@@ -25,8 +24,8 @@ export function SignUp() {
     navigator.navigate("SignIn");
   }
 
-  function handleSignUp(data: any) {
-    console.log(data);
+  function handleSignUp({email, name, password, password_confirm} : FormDataProps) {
+    console.log(email, name, password, password_confirm);
   }
 
   return (
@@ -56,8 +55,9 @@ export function SignUp() {
               rules={{
                 required: "Nome é obrigatório"
               }}
+
               render={({ field: { onChange, value } }) => (
-                <Input placeholder="Nome" onChangeText={onChange} value={value} />
+                <Input placeholder="Nome" onChangeText={onChange} value={value} errorMessage={errors.name?.message}/>
               )}
             />
 
@@ -65,10 +65,14 @@ export function SignUp() {
               control={control}
               name="email" 
                 rules={{
-                required: "Email é obrigatório"
+                required: "Email é obrigatório",
+                pattern: {
+                  value:/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                 message: 'E-mail inválido'
+                }
               }}
               render={({ field: { onChange, value } }) => (
-                <Input placeholder="Email" keyboardType="email-address" autoCapitalize="none" onChangeText={onChange} value={value} />
+                <Input placeholder="Email" keyboardType="email-address" autoCapitalize="none" onChangeText={onChange} value={value} errorMessage={errors.email?.message} />
               )}
             />
 
@@ -79,7 +83,7 @@ export function SignUp() {
                 required: "Senha é obrigatório"
               }}
               render={({ field: { onChange, value } }) => (
-                <Input placeholder="Senha" secureTextEntry onChangeText={onChange} value={value} />
+                <Input placeholder="Senha" secureTextEntry onChangeText={onChange} value={value} errorMessage={errors.password?.message}/>
               )}
             />
 
@@ -87,14 +91,10 @@ export function SignUp() {
               control={control}
               name="password_confirm"
                 rules={{
-                required: "Confirmar senha é obrigatório",
-                pattern: {
-                  value:/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                 message: 'E-mail inválido'
-                }
+                required: "Confirmar senha é obrigatório"
               }}
               render={({ field: { onChange, value } }) => (
-                <Input placeholder="Confirme a Senha" secureTextEntry onChangeText={onChange} value={value} onSubmitEditing={handleSubmit(handleSignUp)} returnKeyType="send"/>
+                <Input placeholder="Confirme a Senha" secureTextEntry onChangeText={onChange} value={value} onSubmitEditing={handleSubmit(handleSignUp)} returnKeyType="send" errorMessage={errors.password_confirm?.message}/>
               )}
             />
 
