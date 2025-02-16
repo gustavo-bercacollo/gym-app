@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { Alert, ScrollView, TouchableOpacity } from "react-native";
+import { ScrollView, TouchableOpacity } from "react-native";
 import { ScreenHeader } from "@components/ScreenHeader";
 import { VStack, Center, Text, Heading, useToast } from "@gluestack-ui/themed";
 import { UserPhoto } from "@components/userPhoto";
@@ -39,7 +39,7 @@ export function Profile() {
           size: number;      
         }
         
-        if(phoInfo.size && phoInfo.size / 1024 / 1024 > 0.1 ){
+        if(phoInfo.size && phoInfo.size / 1024 / 1024 > 5 ){
           return toast.show({
             placement: "top",
             render: ({ id}) => 
