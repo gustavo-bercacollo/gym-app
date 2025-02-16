@@ -53,6 +53,9 @@ export function SignUp() {
             <Controller
               control={control}
               name="name"
+              rules={{
+                required: "Nome é obrigatório"
+              }}
               render={({ field: { onChange, value } }) => (
                 <Input placeholder="Nome" onChangeText={onChange} value={value} />
               )}
@@ -61,6 +64,9 @@ export function SignUp() {
             <Controller
               control={control}
               name="email" 
+                rules={{
+                required: "Email é obrigatório"
+              }}
               render={({ field: { onChange, value } }) => (
                 <Input placeholder="Email" keyboardType="email-address" autoCapitalize="none" onChangeText={onChange} value={value} />
               )}
@@ -69,6 +75,9 @@ export function SignUp() {
             <Controller
               control={control}
               name="password"
+                rules={{
+                required: "Senha é obrigatório"
+              }}
               render={({ field: { onChange, value } }) => (
                 <Input placeholder="Senha" secureTextEntry onChangeText={onChange} value={value} />
               )}
@@ -77,6 +86,13 @@ export function SignUp() {
             <Controller
               control={control}
               name="password_confirm"
+                rules={{
+                required: "Confirmar senha é obrigatório",
+                pattern: {
+                  value:/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                 message: 'E-mail inválido'
+                }
+              }}
               render={({ field: { onChange, value } }) => (
                 <Input placeholder="Confirme a Senha" secureTextEntry onChangeText={onChange} value={value} onSubmitEditing={handleSubmit(handleSignUp)} returnKeyType="send"/>
               )}
