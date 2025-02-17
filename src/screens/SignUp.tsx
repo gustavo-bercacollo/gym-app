@@ -6,17 +6,31 @@ import { Button } from "@components/Button"
 import { useNavigation } from "@react-navigation/native"
 import { useForm, Controller } from "react-hook-form"
 import { AuthNavigatorRoutesProps } from "@routes/auth.routes"
+import { yupResolver } from "@hookform/resolvers/yup"
+import * as yup from "yup"
+import { Feather } from "lucide-react-native"
+
+type FormDataProps = {
+  name: string;
+  email: string;
+  password: string;
+  password_confirm: string;
+} 
+
+const signUpSchema = yup.object({
+  email: yup.string().email().required("E-mail é obrigatório"),
+  name: yup.string().required("Nome é obrigatório"),
+  password: yup.string().min(8, "Senha deve ter no mínimo 8 caracteres").required("Senha é obrigatória"),
+  password_confirm: yup.string()
+    .oneOf([yup.ref("password")], "As senhas não coincidem")
+    .required("Confirmar senha é obrigatório"),
+})
 
 export function SignUp() {
 
-  type FormDataProps = {
-    name: string;
-    email: string;
-    password: string;
-    password_confirm: string;
-  } 
-
-  const { control, handleSubmit, formState: {errors} } = useForm<FormDataProps>();
+  const { control, handleSubmit, formState: {errors} } = useForm<FormDataProps>({
+    resolver: yupResolver(signUpSchema)
+  });
 
   const navigator = useNavigation<AuthNavigatorRoutesProps>();
 
@@ -24,8 +38,19 @@ export function SignUp() {
     navigator.navigate("SignIn");
   }
 
-  function handleSignUp({email, name, password, password_confirm} : FormDataProps) {
-    console.log(email, name, password, password_confirm);
+  function handleSignUp({email, name, password } : FormDataProps) {
+    fetch("http://192.168.1.173:3333/users", {
+      method: "POST",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+        name,
+        password,
+      }),
+    })
   }
 
   return (
@@ -51,11 +76,7 @@ export function SignUp() {
 
             <Controller
               control={control}
-              name="name"
-              rules={{
-                required: "Nome é obrigatório"
-              }}
-
+              name="name"      
               render={({ field: { onChange, value } }) => (
                 <Input placeholder="Nome" onChangeText={onChange} value={value} errorMessage={errors.name?.message}/>
               )}
@@ -64,13 +85,6 @@ export function SignUp() {
             <Controller
               control={control}
               name="email" 
-                rules={{
-                required: "Email é obrigatório",
-                pattern: {
-                  value:/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                 message: 'E-mail inválido'
-                }
-              }}
               render={({ field: { onChange, value } }) => (
                 <Input placeholder="Email" keyboardType="email-address" autoCapitalize="none" onChangeText={onChange} value={value} errorMessage={errors.email?.message} />
               )}
@@ -79,9 +93,6 @@ export function SignUp() {
             <Controller
               control={control}
               name="password"
-                rules={{
-                required: "Senha é obrigatório"
-              }}
               render={({ field: { onChange, value } }) => (
                 <Input placeholder="Senha" secureTextEntry onChangeText={onChange} value={value} errorMessage={errors.password?.message}/>
               )}
@@ -89,10 +100,7 @@ export function SignUp() {
 
             <Controller
               control={control}
-              name="password_confirm"
-                rules={{
-                required: "Confirmar senha é obrigatório"
-              }}
+              name="password_confirm"              
               render={({ field: { onChange, value } }) => (
                 <Input placeholder="Confirme a Senha" secureTextEntry onChangeText={onChange} value={value} onSubmitEditing={handleSubmit(handleSignUp)} returnKeyType="send" errorMessage={errors.password_confirm?.message}/>
               )}
