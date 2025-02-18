@@ -9,6 +9,8 @@ import { AuthNavigatorRoutesProps } from "@routes/auth.routes"
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
 import { api } from "../service/api"
+import axios from "axios"
+import { Alert } from "react-native"
 
 
 type FormDataProps = {
@@ -41,13 +43,14 @@ export function SignUp() {
 
   async function handleSignUp({email, name, password } : FormDataProps) {
     try {
-      const response = await api.post("/users", { email, name, password });
+      const response = await api.post('/users', { name, email, password });
       console.log(response.data);
     } catch (error) {
-      console.error(error);
+      if(axios.isAxiosError(error)) {
+        Alert.alert(error.response?.data.message);
+      }
     }
-    
-  }
+}
 
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
