@@ -8,7 +8,8 @@ import { useForm, Controller } from "react-hook-form"
 import { AuthNavigatorRoutesProps } from "@routes/auth.routes"
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
-import { Feather } from "lucide-react-native"
+import { api } from "../service/api"
+
 
 type FormDataProps = {
   name: string;
@@ -39,21 +40,13 @@ export function SignUp() {
   }
 
   async function handleSignUp({email, name, password } : FormDataProps) {
-    const response = await fetch("http://192.168.1.173:3333/users", {
-      method: "POST",
-      headers: {
-        "Accept": "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email,
-        name,
-        password,
-      }),
-    })
-
-    const data = await response.json();
-    console.log(data);
+    try {
+      const response = await api.post("/users", { email, name, password });
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+    
   }
 
   return (
