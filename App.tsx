@@ -22,12 +22,12 @@ export default function App() {
       translucent
       />
       <AuthContext.Provider value={{
-        id: "1",
-        name: "User Teste",
-        email: "teste@teste.com",
-        isLogged: true,
-        token: "123456",
-        updateUser: () => {},
+        user: {
+          id: "user",
+          name: "User",
+          email: "user@example.com",
+          avatar: "https://example.com/user.jpg"
+        }
       }}>
         {fontsLoaded ? <Routes/>: <Loading />} 
       </AuthContext.Provider>

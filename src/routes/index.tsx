@@ -8,7 +8,6 @@ import { AppRoutes } from '@routes/app.routes';
 
 export function Routes() {
 
-  console.log("Componente Routes está sendo renderizado...");
   const contextData = useContext(AuthContext);
   console.log(contextData);
   
