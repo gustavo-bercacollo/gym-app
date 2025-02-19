@@ -1,4 +1,4 @@
-import { useAuth } from "@hooks/UserAuth";
+import { useAuth } from "@hooks/userAuth";
 import { NavigationContainer, DefaultTheme} from "@react-navigation/native";
 import { AuthRoutes } from "./auth.routes";
 import { gluestackUIConfig } from "../../config/gluestack-ui.config";
