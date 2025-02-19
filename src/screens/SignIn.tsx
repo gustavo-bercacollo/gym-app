@@ -4,16 +4,27 @@ import Logo from "@assets/logo.svg"
 import { Input } from "@components/Input"
 import { Button } from "@components/Button"
 import { useNavigation } from "@react-navigation/native"
-
+import { useForm, Controller } from "react-hook-form"
 import { AuthNavigatorRoutesProps } from "@routes/auth.routes"
 
+type FormData = {
+  email: string,
+  password: string,
+}
 
 export function SignIn() {
 
+  const {control, handleSubmit, formState: {errors}} = useForm<FormData>()
+
   const navigation = useNavigation<AuthNavigatorRoutesProps>()
 
-  function handleSingUp(){
+  function handleNewAccount() {
     navigation.navigate("SignUp")
+
+  }
+
+  function handleSignIn({email, password}: FormData) {
+    console.log(email, password)
 
   }
     return (
@@ -42,16 +53,43 @@ export function SignIn() {
             <Heading color="$gray100">
               Acesse a conta 
             </Heading>
-            <Input 
-              placeholder="Email" 
-              keyboardType="email-address"
-              autoCapitalize="none"
+
+            <Controller
+              name="email"
+              control={control}
+              rules={{ required: "Email é obrigatório" }}
+              render={({ field: { onChange } }) => (
+              <Input 
+                onChangeText={onChange} 
+                placeholder="Email" 
+                keyboardType="email-address"
+                autoCapitalize="none"
+                errorMessage={errors.email?.message}
               />
-            <Input placeholder="Senha" secureTextEntry/>
+              )}
+              />
+
+            <Controller
+              name="password"
+              control={control}
+              rules={{ required: "Senha é obrigatória" }}
+              render={({ field: { onChange } }) => (
+                <Input 
+                placeholder="Senha" 
+                secureTextEntry
+                errorMessage={errors.password?.message}
+                onChangeText={onChange}
+                />
+              )}
+            />
+
+            
 
             <Button 
-              title="Acessar"> 
-
+              title="Acessar"
+              onPress={handleSubmit(handleSignIn)}
+              > 
+              
             </Button>
 
           </Center>
@@ -60,7 +98,7 @@ export function SignIn() {
             <Text color="$gray100" fontSize="$sm" mb="$3" fontFamily="$body">
               Não tem uma conta? 
             </Text>
-            <Button onPress={handleSingUp}
+            <Button onPress={handleNewAccount}
               title="Criar conta"
               variant="outline"
               />

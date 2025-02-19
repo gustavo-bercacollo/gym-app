@@ -56,11 +56,7 @@ export function SignUp() {
       console.log(error)
       
       
-      toast.show({
-        title,
-        placement: "top",
-        bgColor: "$red500",
-      })
+      Alert.alert(title, "Ocorreu um erro ao criar a conta, tente novamente mais tarde")
       
     }
 }
