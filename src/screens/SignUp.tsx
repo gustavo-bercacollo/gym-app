@@ -1,4 +1,4 @@
-import { VStack, Image, Center, Text, Heading, ScrollView } from "@gluestack-ui/themed"
+import { VStack, Image, Center, Text, Heading, ScrollView, useToast } from "@gluestack-ui/themed"
 import BackgroundImg from "@assets/background.png"
 import Logo from "@assets/logo.svg"
 import { Input } from "@components/Input"
@@ -9,8 +9,9 @@ import { AuthNavigatorRoutesProps } from "@routes/auth.routes"
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
 import { api } from "../service/api"
-import axios from "axios"
+import { AppError } from "@utils/AppError"
 import { Alert } from "react-native"
+
 
 
 type FormDataProps = {
@@ -31,6 +32,8 @@ const signUpSchema = yup.object({
 
 export function SignUp() {
 
+  const toast = useToast()
+
   const { control, handleSubmit, formState: {errors} } = useForm<FormDataProps>({
     resolver: yupResolver(signUpSchema)
   });
@@ -41,14 +44,24 @@ export function SignUp() {
     navigator.navigate("SignIn");
   }
 
+
   async function handleSignUp({email, name, password } : FormDataProps) {
     try {
       const response = await api.post('/users', { name, email, password });
       console.log(response.data);
     } catch (error) {
-      if(axios.isAxiosError(error)) {
-        Alert.alert(error.response?.data.message);
-      }
+      
+      const isAppError = error instanceof AppError
+      const title = isAppError ? error.message : "Erro ao criar conta"
+      console.log(error)
+      
+      
+      toast.show({
+        title,
+        placement: "top",
+        bgColor: "$red500",
+      })
+      
     }
 }
 
