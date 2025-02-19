@@ -4,7 +4,7 @@ import { GluestackUIProvider } from '@gluestack-ui/themed';
 import { config } from "./config/gluestack-ui.config"
 import { Loading } from '@components/Loading';
 import { Routes } from '@routes/index';
-import { AuthContext } from '@contexts/AuthContext';
+import { AuthContext, AuthContextProvider } from '@contexts/AuthContext';
 
  
 export default function App() {
@@ -21,16 +21,9 @@ export default function App() {
       backgroundColor={'transparent'}
       translucent
       />
-      <AuthContext.Provider value={{
-        user: {
-          id: "user",
-          name: "User",
-          email: "user@example.com",
-          avatar: "https://example.com/user.jpg"
-        }
-      }}>
+      <AuthContextProvider>
         {fontsLoaded ? <Routes/>: <Loading />} 
-      </AuthContext.Provider>
+      </AuthContextProvider>
       
   
   </GluestackUIProvider>
