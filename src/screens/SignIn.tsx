@@ -6,6 +6,7 @@ import { Button } from "@components/Button"
 import { useNavigation } from "@react-navigation/native"
 import { useForm, Controller } from "react-hook-form"
 import { AuthNavigatorRoutesProps } from "@routes/auth.routes"
+import { useAuth } from "@hooks/userAuth"
 
 type FormData = {
   email: string,
@@ -13,6 +14,8 @@ type FormData = {
 }
 
 export function SignIn() {
+
+  const { SignIn } = useAuth()
 
   const {control, handleSubmit, formState: {errors}} = useForm<FormData>()
 
@@ -23,10 +26,10 @@ export function SignIn() {
 
   }
 
-  function handleSignIn({email, password}: FormData) {
-    console.log(email, password)
-
+  async function handleSignIn({email, password}: FormData) {
+    await SignIn(email, password)
   }
+
     return (
     <ScrollView contentContainerStyle={{flexGrow: 1}}
     showsVerticalScrollIndicator={false}

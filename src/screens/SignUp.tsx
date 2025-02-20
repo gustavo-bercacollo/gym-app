@@ -8,7 +8,7 @@ import { useForm, Controller } from "react-hook-form"
 import { AuthNavigatorRoutesProps } from "@routes/auth.routes"
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
-import { api } from "../service/api"
+import { api } from "../services/api"
 import { AppError } from "@utils/AppError"
 import { Alert } from "react-native"
 
