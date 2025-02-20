@@ -1,4 +1,4 @@
-import { VStack, Image, Center, Text, Heading, ScrollView } from "@gluestack-ui/themed"
+import { VStack, Image, Center, Text, Heading, ScrollView, useToast} from "@gluestack-ui/themed"
 import BackgroundImg from "@assets/background.png"
 import Logo from "@assets/logo.svg"
 import { Input } from "@components/Input"
@@ -7,6 +7,8 @@ import { useNavigation } from "@react-navigation/native"
 import { useForm, Controller } from "react-hook-form"
 import { AuthNavigatorRoutesProps } from "@routes/auth.routes"
 import { useAuth } from "@hooks/userAuth"
+import { AppError } from "@utils/AppError"
+import { Alert } from "react-native"
 
 type FormData = {
   email: string,
@@ -14,6 +16,8 @@ type FormData = {
 }
 
 export function SignIn() {
+
+  const toast = useToast()
 
   const { SignIn } = useAuth()
 
@@ -27,7 +31,16 @@ export function SignIn() {
   }
 
   async function handleSignIn({email, password}: FormData) {
-    await SignIn(email, password)
+    try {
+      await SignIn(email, password)
+
+    } catch (error) {
+      const isAppError = error instanceof AppError
+      const title = isAppError ? error.message : "Erro ao acessar a conta"
+
+      Alert.alert(title)
+
+    }
   }
 
     return (
