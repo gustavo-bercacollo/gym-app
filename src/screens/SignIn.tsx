@@ -1,3 +1,4 @@
+import { useState } from "react"
 import { VStack, Image, Center, Text, Heading, ScrollView, useToast} from "@gluestack-ui/themed"
 import BackgroundImg from "@assets/background.png"
 import Logo from "@assets/logo.svg"
@@ -17,6 +18,8 @@ type FormData = {
 
 export function SignIn() {
 
+  const [isLoading, setIsLoading] = useState(false)
+
   const toast = useToast()
 
   const { SignIn } = useAuth()
@@ -33,10 +36,13 @@ export function SignIn() {
   async function handleSignIn({email, password}: FormData) {
     try {
       await SignIn(email, password)
+      setIsLoading(true)
 
     } catch (error) {
       const isAppError = error instanceof AppError
       const title = isAppError ? error.message : "Erro ao acessar a conta"
+      
+      setIsLoading(false)
 
       Alert.alert(title)
 
@@ -104,6 +110,7 @@ export function SignIn() {
             <Button 
               title="Acessar"
               onPress={handleSubmit(handleSignIn)}
+              isLoading={isLoading}
               > 
               
             </Button>
