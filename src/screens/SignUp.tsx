@@ -1,4 +1,4 @@
-import { VStack, Image, Center, Text, Heading, ScrollView, useToast } from "@gluestack-ui/themed"
+import { VStack, Image, Center, Text, Heading, ScrollView } from "@gluestack-ui/themed"
 import BackgroundImg from "@assets/background.png"
 import Logo from "@assets/logo.svg"
 import { Input } from "@components/Input"
@@ -11,6 +11,8 @@ import * as yup from "yup"
 import { api } from "../services/api"
 import { AppError } from "@utils/AppError"
 import { Alert } from "react-native"
+import { useState } from "react"
+import { useAuth } from "@hooks/userAuth"
 
 
 
@@ -32,7 +34,9 @@ const signUpSchema = yup.object({
 
 export function SignUp() {
 
-  const toast = useToast()
+  const[ isLoading, setIsLoading ] = useState(false)
+
+  const { SignIn } = useAuth();
 
   const { control, handleSubmit, formState: {errors} } = useForm<FormDataProps>({
     resolver: yupResolver(signUpSchema)
@@ -47,10 +51,14 @@ export function SignUp() {
 
   async function handleSignUp({email, name, password } : FormDataProps) {
     try {
-      const response = await api.post('/users', { name, email, password });
-      console.log(response.data);
+    
+      setIsLoading(true)
+      await api.post('/users', { name, email, password });
+
+      await SignIn(email, password)
+
     } catch (error) {
-      
+      setIsLoading(false)
       const isAppError = error instanceof AppError
       const title = isAppError ? error.message : "Erro ao criar conta"
       console.log(error)
@@ -117,6 +125,7 @@ export function SignUp() {
             <Button 
               title="Criar e acessar" 
               onPress={handleSubmit(handleSignUp)} 
+              isLoading={isLoading}
             />
 
           </Center>
