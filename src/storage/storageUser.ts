@@ -15,3 +15,7 @@ export const storageUserSave = async (user: UserDTO) => {
 
     return user;
  }
+
+ export function storageUserRemove() {
+    AsyncStorage.removeItem(USER_STORAGE);
+ }
